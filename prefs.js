@@ -22,7 +22,8 @@ var Fields = {
     TOPBAR_PREVIEW_SIZE    : 'topbar-preview-size',
     TOPBAR_DISPLAY_MODE_ID : 'display-mode',
     DISABLE_DOWN_ARROW     : 'disable-down-arrow',
-    STRIP_TEXT             : 'strip-text'
+    STRIP_TEXT             : 'strip-text',
+    PASTE_ON_SELECT        : 'paste-on-select'
 };
 
 const SCHEMA_NAME = 'org.gnome.shell.extensions.clipboard-indicator';
@@ -99,6 +100,7 @@ const App = new Lang.Class({
         this.field_cache_disable = new Gtk.Switch();
         this.field_notification_toggle = new Gtk.Switch();
         this.field_strip_text = new Gtk.Switch();
+        this.field_paste_on_select = new Gtk.Switch();
         this.field_move_item_first = new Gtk.Switch();
         this.field_keybinding = createKeybindingWidget(SettingsSchema);
         addKeybinding(this.field_keybinding.model, SettingsSchema, "toggle-menu",
@@ -176,6 +178,11 @@ const App = new Lang.Class({
             hexpand: true,
             halign: Gtk.Align.START
         });
+        let pasteOnSelectLabel = new Gtk.Label({
+            label: _("Paste on select"),
+            hexpand: true,
+            halign: Gtk.Align.START
+        });
 
         const addRow = ((main) => {
             let row = 0;
@@ -209,6 +216,7 @@ const App = new Lang.Class({
         addRow(disableDownArrowLabel, this.field_disable_down_arrow);
         addRow(topbarPreviewLabel,    this.field_topbar_preview_size);
         addRow(stripTextLabel,        this.field_strip_text);
+        addRow(pasteOnSelectLabel,    this.field_paste_on_select);
         addRow(moveFirstLabel,        this.field_move_item_first);
         addRow(keybindingLabel,       this.field_keybinding_activation);
         addRow(null,                  this.field_keybinding);
@@ -224,6 +232,7 @@ const App = new Lang.Class({
         SettingsSchema.bind(Fields.DISABLE_DOWN_ARROW, this.field_disable_down_arrow, 'active', Gio.SettingsBindFlags.DEFAULT);
         SettingsSchema.bind(Fields.TOPBAR_PREVIEW_SIZE, this.field_topbar_preview_size, 'value', Gio.SettingsBindFlags.DEFAULT);
         SettingsSchema.bind(Fields.STRIP_TEXT, this.field_strip_text, 'active', Gio.SettingsBindFlags.DEFAULT);
+        SettingsSchema.bind(Fields.PASTE_ON_SELECT, this.field_paste_on_select, 'active', Gio.SettingsBindFlags.DEFAULT);
         SettingsSchema.bind(Fields.ENABLE_KEYBINDING, this.field_keybinding_activation, 'active', Gio.SettingsBindFlags.DEFAULT);
 
         this.main.show_all();
